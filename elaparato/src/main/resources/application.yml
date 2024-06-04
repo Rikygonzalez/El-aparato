@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: elaparato
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/elaparato
+    username: root
+    password: rikydigitalhouse
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+  sql:
+    init:
+      data-locations: classpath:data.sql
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/realms/el-aparato
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+server:
+  port: 8082
+keycloak:
+  realm: el-aparato
+  resource: el-aparato-app
+  auth-server-url: http://localhost:8080/auth
+  ssl-required: external
+  credentials:
+    secret: YOUR_CLIENT_SECRET
+  use-resource-role-mappings: true
+jwt:
+  auth:
+    converter:
+      principal-attribute: preferred_username
+      resource-id: el-aparato-app
+dh:
+  keycloak:
+    serverUrl: http://localhost:8080
+    realm: el-aparato
+    clientId: api-internal-users-client
+    clientSecret: 55hsPGIklyPmqv5olyraSsxCGA1aKwA8
